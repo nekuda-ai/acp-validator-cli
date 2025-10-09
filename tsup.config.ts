@@ -8,6 +8,12 @@ export default defineConfig({
   sourcemap: true,
   dts: true,
   shims: true,
+  bundle: true,
+  external: [
+    '@vitest/browser',
+    '@vitest/ui',
+    'lightningcss',
+  ],
   banner: {
     js: '#!/usr/bin/env node',
   },
