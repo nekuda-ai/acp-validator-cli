@@ -11,8 +11,6 @@ import { TestStateManager } from '../core/test-state.js';
 import { RunScreen } from '../ui/screens/RunScreen.js';
 
 export async function runCommand(options: ConfigOptions): Promise<void> {
-  console.log('\nACP Test Runner\n');
-
   // Load config from file if --config specified or search default locations
   let config: ACPConfig | undefined = undefined;
 

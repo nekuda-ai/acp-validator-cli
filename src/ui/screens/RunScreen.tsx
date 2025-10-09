@@ -9,14 +9,24 @@ import { TaskList, Task } from 'ink-task-list';
 import spinners from 'cli-spinners';
 import { useTestRunner } from '../../core/hooks/useTestRunner.js';
 import type { TestStateManager } from '../../core/test-state.js';
+import { Logo } from '../components/Logo.js';
+
+// Memoized Logo component to prevent re-renders
+const MemoizedLogo = React.memo(Logo);
 
 interface Props {
   testState: TestStateManager;
   checkoutUrl?: string;
   verbose?: boolean;
+  showLogo?: boolean;
 }
 
-export const RunScreen: React.FC<Props> = ({ testState, checkoutUrl, verbose = false }) => {
+export const RunScreen: React.FC<Props> = ({
+  testState,
+  checkoutUrl,
+  verbose = false,
+  showLogo = true
+}) => {
   const { state, isRunning } = useTestRunner(testState);
 
   const totalTests = state.passed + state.failed + state.skipped;
@@ -27,10 +37,10 @@ export const RunScreen: React.FC<Props> = ({ testState, checkoutUrl, verbose = f
 
   return (
     <Box flexDirection="column">
-      {/* Header */}
-      <Box marginBottom={1}>
-        <Text bold>ACP Test Runner</Text>
-      </Box>
+      {/* Nekuda ACP Logo - always visible */}
+      {showLogo && <MemoizedLogo />}
+
+      {/* Testing URL */}
       {checkoutUrl && (
         <Box marginBottom={1}>
           <Text dimColor>Testing: {checkoutUrl}</Text>
