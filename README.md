@@ -1,18 +1,10 @@
-# ACP Test CLI
+# ACP Agentic Checkout Test CLI
 
-> **Test and validate your Agentic Commerce Protocol implementations with confidence**
+<img width="1500" height="500" alt="image" src="https://github.com/user-attachments/assets/99fcf17e-9f2d-4c67-89a3-fb4dcf937c90" />
 
-A powerful CLI tool for testing ACP (Agentic Commerce Protocol) Checkout API endpoints against OpenAI's official specification. Perfect for merchants building AI-native checkout experiences for ChatGPT and other AI platforms.
+> **Test and validate your ACP Agentic Checkout implementation**
 
-## What is ACP?
-
-The [Agentic Commerce Protocol (ACP)](https://agenticcommerce.dev/) is an open-source protocol that enables AI agents to facilitate seamless commerce transactions between merchants and customers. Think of it as the API layer that powers features like ChatGPT's [Instant Checkout](https://developers.openai.com/commerce).
-
-**Key Benefits:**
-- 🤖 **AI-Native Commerce**: Enable purchases directly in AI chat interfaces
-- 🏪 **Merchant Control**: You remain the merchant of record with full control
-- 🔒 **Secure by Design**: Built-in support for idempotency, signatures, and payment tokenization
-- 🌍 **Platform Agnostic**: Works with any AI platform supporting ACP
+A CLI tool for testing ACP (Agentic Commerce Protocol) Agentic Checkout API endpoints against OpenAI's official specification. Perfect for merchants building AI-native checkout experiences for ChatGPT and other AI platforms.
 
 ## Features
 
@@ -288,12 +280,11 @@ acp-test-cli/
 
 ## Contributing
 
-Contributions welcome! This tool helps merchants build better ACP integrations.
+If you're interested in collaborating or contributing, get in touch at **[founder@nekuda.ai](mailto:founder@nekuda.ai)**.
 
 ## License
 
-MIT
+Licensed under the Apache 2.0 License.
 
 ---
 
-**Built by merchants, for merchants** 🛒
