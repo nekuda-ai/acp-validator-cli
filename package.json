@@ -1,0 +1,57 @@
+{
+  "name": "@nekuda/acp-test",
+  "version": "0.1.0",
+  "description": "CLI tool to test Agentic Commerce Protocol implementations",
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "bin": {
+    "acp-test": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "spec"
+  ],
+  "scripts": {
+    "dev": "tsx src/cli.ts",
+    "prebuild": "mkdir -p spec",
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest",
+    "lint": "eslint src --ext .ts",
+    "format": "prettier --write src"
+  },
+  "keywords": [
+    "acp",
+    "agentic-commerce",
+    "testing",
+    "cli"
+  ],
+  "author": "Nekuda",
+  "license": "MIT",
+  "dependencies": {
+    "@inquirer/prompts": "^6.0.0",
+    "ajv": "^8.17.0",
+    "axios": "^1.7.0",
+    "cosmiconfig": "^9.0.0",
+    "handlebars": "^4.7.8",
+    "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+    "@seriousme/openapi-schema-validator": "^2.7.0",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^20.0.0",
+    "@types/supertest": "^6.0.3",
+    "@types/yargs": "^17.0.0",
+    "@vitest/ui": "^3.2.4",
+    "eslint": "^9.0.0",
+    "js-yaml": "^4.1.0",
+    "prettier": "^3.5.0",
+    "supertest": "^7.1.4",
+    "tsup": "^8.3.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.6.0",
+    "vitest": "^3.1.0"
+  }
+}
