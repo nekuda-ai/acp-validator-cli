@@ -59,7 +59,10 @@ describe('POST /checkout_sessions/{id}/complete', () => {
 
       const body: CompleteSessionResponse = response.body;
       expect(body.status).toBe('completed');
-      expect(body.order_id).toBeDefined();
+      expect(body.order).toBeDefined();
+      expect(body.order.id).toBeDefined();
+      expect(body.order.checkout_session_id).toBe(sessionId);
+      expect(body.order.permalink_url).toBeDefined();
       expect(body.id).toBe(sessionId);
     });
 
@@ -87,7 +90,8 @@ describe('POST /checkout_sessions/{id}/complete', () => {
 
       const body: CompleteSessionResponse = response.body;
       expect(body.status).toBe('completed');
-      expect(body.order_id).toBeDefined();
+      expect(body.order).toBeDefined();
+      expect(body.order.id).toBeDefined();
     });
 
     it('should complete session with buyer override', async () => {
@@ -118,7 +122,7 @@ describe('POST /checkout_sessions/{id}/complete', () => {
       expect(body.buyer?.email).toBe(TEST_BUYERS.WITH_PHONE.email);
     });
 
-    it('should return order_id after successful completion', async () => {
+    it('should return order object after successful completion', async () => {
       // ARRANGE: Create and prepare session
       const createResponse = await createSession(
         buildCreateSessionRequest({
@@ -139,9 +143,13 @@ describe('POST /checkout_sessions/{id}/complete', () => {
       expect(response.status).toBe(200);
 
       const body: CompleteSessionResponse = response.body;
-      expect(body.order_id).toBeDefined();
-      expect(typeof body.order_id).toBe('string');
-      expect(body.order_id?.length).toBeGreaterThan(0);
+      expect(body.order).toBeDefined();
+      expect(body.order.id).toBeDefined();
+      expect(typeof body.order.id).toBe('string');
+      expect(body.order.id.length).toBeGreaterThan(0);
+      expect(body.order.checkout_session_id).toBe(sessionId);
+      expect(body.order.permalink_url).toBeDefined();
+      expect(typeof body.order.permalink_url).toBe('string');
     });
   });
 
@@ -167,7 +175,8 @@ describe('POST /checkout_sessions/{id}/complete', () => {
 
         const body: CompleteSessionResponse = response.body;
         expect(body.status, 'Status should be completed').toBe('completed');
-        expect(body.order_id, 'Order ID should be present').toBeDefined();
+        expect(body.order, 'Order should be present').toBeDefined();
+        expect(body.order.id, 'Order ID should be present').toBeDefined();
       }
     );
   });
@@ -264,7 +273,10 @@ describe('POST /checkout_sessions/{id}/complete', () => {
       expect(body.fulfillment_options).toBeInstanceOf(Array);
       expect(body.messages).toBeInstanceOf(Array);
       expect(body.links).toBeInstanceOf(Array);
-      expect(body.order_id).toBeDefined();
+      expect(body.order).toBeDefined();
+      expect(body.order.id).toBeDefined();
+      expect(body.order.checkout_session_id).toBe(body.id);
+      expect(body.order.permalink_url).toBeDefined();
     });
 
     it('should preserve all line items and totals from session', async () => {

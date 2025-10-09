@@ -86,9 +86,12 @@ describe('ACP Happy Path - End-to-End Flow', () => {
 
       expect(completeResponse.status).toBe(200);
       expect(completeResponse.body.status).toBe('completed');
-      expect(completeResponse.body.order_id).toBeDefined();
-      expect(typeof completeResponse.body.order_id).toBe('string');
-      expect(completeResponse.body.order_id!.length).toBeGreaterThan(0);
+      expect(completeResponse.body.order).toBeDefined();
+      expect(completeResponse.body.order.id).toBeDefined();
+      expect(typeof completeResponse.body.order.id).toBe('string');
+      expect(completeResponse.body.order.id.length).toBeGreaterThan(0);
+      expect(completeResponse.body.order.checkout_session_id).toBeDefined();
+      expect(completeResponse.body.order.permalink_url).toBeDefined();
     });
 
     it('should complete minimal flow: create with everything → complete', async () => {
@@ -126,7 +129,8 @@ describe('ACP Happy Path - End-to-End Flow', () => {
 
       expect(completeResponse.status).toBe(200);
       expect(completeResponse.body.status).toBe('completed');
-      expect(completeResponse.body.order_id).toBeDefined();
+      expect(completeResponse.body.order).toBeDefined();
+      expect(completeResponse.body.order.id).toBeDefined();
     });
 
     it('should handle state transitions correctly throughout flow', async () => {
@@ -228,7 +232,8 @@ describe('ACP Happy Path - End-to-End Flow', () => {
 
       expect(completeResponse.status).toBe(200);
       expect(completeResponse.body.status).toBe('completed');
-      expect(completeResponse.body.order_id).toBeDefined();
+      expect(completeResponse.body.order).toBeDefined();
+      expect(completeResponse.body.order.id).toBeDefined();
     });
 
     it('should handle buyer override in complete request', async () => {
@@ -319,7 +324,8 @@ describe('ACP Happy Path - End-to-End Flow', () => {
       expect(completeResponse.body.line_items.length).toBe(originalLineItemCount);
       expect(completeResponse.body.buyer?.email).toBe(originalBuyerEmail);
       expect(completeResponse.body.fulfillment_address?.city).toBe(originalAddress?.city);
-      expect(completeResponse.body.order_id).toBeDefined();
+      expect(completeResponse.body.order).toBeDefined();
+      expect(completeResponse.body.order.id).toBeDefined();
     });
   });
 });

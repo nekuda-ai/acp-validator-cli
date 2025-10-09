@@ -145,9 +145,15 @@ export interface CompleteSessionRequest {
   payment_data: PaymentData;
 }
 
+export interface Order {
+  id: string;
+  checkout_session_id: string;
+  permalink_url: string;
+}
+
 export interface CompleteSessionResponse extends CreateSessionResponse {
   status: 'completed';
-  order_id?: string;
+  order: Order;
 }
 
 // GET /checkout_sessions/{id}
