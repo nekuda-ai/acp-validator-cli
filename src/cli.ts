@@ -60,8 +60,15 @@ yargs(hideBin(process.argv))
           type: 'string',
           description: 'Output directory for reports',
         })
+        .option('verbose', {
+          alias: 'v',
+          type: 'boolean',
+          description: 'Show all individual test results',
+          default: false,
+        })
         .example('$0 run', 'Run tests (prompts for missing config)')
-        .example('$0 run --checkout-url http://localhost:3004 --api-key test_key', 'Run with inline options');
+        .example('$0 run --checkout-url http://localhost:3004 --api-key test_key', 'Run with inline options')
+        .example('$0 run --verbose', 'Show all individual test results');
     },
     handler: async (argv) => {
       await runCommand({
@@ -72,6 +79,7 @@ yargs(hideBin(process.argv))
         format: argv.format as 'json' | 'yaml' | 'html' | undefined,
         config: argv.config,
         output: argv.output,
+        verbose: argv.verbose as boolean,
       });
     },
   })

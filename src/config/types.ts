@@ -5,6 +5,7 @@ export interface ACPConfig {
   testType: 'simple' | 'comprehensive';
   outputFormat: 'json' | 'yaml' | 'html';
   outputDir?: string;
+  verbose?: boolean;
 }
 
 export interface ConfigOptions {
@@ -15,4 +16,5 @@ export interface ConfigOptions {
   format?: 'json' | 'yaml' | 'html';
   config?: string;
   output?: string;
+  verbose?: boolean;
 }

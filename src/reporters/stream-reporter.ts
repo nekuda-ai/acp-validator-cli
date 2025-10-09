@@ -1,14 +1,19 @@
 /**
  * Stream Reporter - bridges Vitest to UI layer
- * Listens to Vitest events and updates TestStateManager
+ * Listens to Vitest events and updates TestStateManager in real-time
  */
 
-import type { Reporter, Task, File } from 'vitest';
+import type { Reporter } from 'vitest';
 import type { TestStateManager } from '../core/test-state.js';
 import type { TestResult } from './types.js';
+import { categorizeTest } from '../core/categories.js';
+
+// Import new Vitest types
+type TestCase = any; // Vitest's TestCase type
+type TestModule = any; // Vitest's TestModule type
 
 export class StreamReporter implements Reporter {
-  private processedTests = new Set<string>();
+  private testCounts = new Map<string, number>();
 
   constructor(private testState: TestStateManager) {}
 
@@ -17,52 +22,75 @@ export class StreamReporter implements Reporter {
    */
   onInit(): void {
     this.testState.reset();
-    this.processedTests.clear();
+    this.testCounts.clear();
   }
 
   /**
-   * Called when all tests finish - process results from files
+   * Called when a test is about to run (new Vitest API)
    */
-  async onFinished(files: File[] = []): Promise<void> {
-    // Process all test results from files
-    files.forEach(file => {
-      this.processTaskResults(file.tasks);
-    });
+  onTestCaseReady(testCase: TestCase): void {
+    // Get suite name from parent
+    const suiteName = this.getSuiteName(testCase);
 
-    // Mark as complete
+    // Mark test as started
+    this.testState.onTestStart(testCase.name);
+
+    // Add pending result immediately
+    const result: TestResult = {
+      name: testCase.name,
+      status: 'pending',
+      duration: 0,
+      category: categorizeTest(testCase.name, suiteName),
+    };
+
+    this.testState.addResult(result);
+  }
+
+  /**
+   * Called when a test finishes (new Vitest API)
+   */
+  onTestCaseResult(testCase: TestCase): void {
+    const suiteName = this.getSuiteName(testCase);
+    const testResult = testCase.result();
+
+    // Create result with actual status
+    const result: TestResult = {
+      name: testCase.name,
+      status: this.mapStatus(testResult.state),
+      duration: testResult.duration || 0,
+      category: categorizeTest(testCase.name, suiteName),
+      ...(testResult.errors?.length && {
+        error: {
+          message: testResult.errors[0]?.message || 'Unknown error',
+          stack: testResult.errors[0]?.stack,
+        },
+      }),
+    };
+
+    // Update the result (will replace pending one)
+    this.testState.addResult(result);
+  }
+
+  /**
+   * Called when all tests are complete (new Vitest API)
+   */
+  onTestRunEnd(): void {
     this.testState.onComplete();
   }
 
   /**
-   * Process test results recursively
+   * Get suite name from test case parent hierarchy
    */
-  private processTaskResults(tasks: Task[]): void {
-    tasks.forEach(task => {
-      if (task.type === 'suite') {
-        // Recursively process suite tasks
-        this.processTaskResults(task.tasks);
-      } else if (task.type === 'test') {
-        // Only process each test once
-        const testKey = `${task.file?.name || 'unknown'}::${task.name}`;
-        if (!this.processedTests.has(testKey)) {
-          this.processedTests.add(testKey);
+  private getSuiteName(testCase: TestCase): string | undefined {
+    const parts: string[] = [];
+    let current = testCase.parent;
 
-          const result: TestResult = {
-            name: task.name,
-            status: this.mapStatus(task.result?.state || 'pending'),
-            duration: task.result?.duration || 0,
-            ...(task.result?.errors?.length && {
-              error: {
-                message: task.result.errors[0]?.message || 'Unknown error',
-                stack: task.result.errors[0]?.stack,
-              },
-            }),
-          };
+    while (current && current.type === 'suite') {
+      parts.unshift(current.name);
+      current = current.parent;
+    }
 
-          this.testState.addResult(result);
-        }
-      }
-    });
+    return parts.length > 0 ? parts.join(' > ') : undefined;
   }
 
   /**
@@ -70,10 +98,13 @@ export class StreamReporter implements Reporter {
    */
   private mapStatus(state: string): TestResult['status'] {
     switch (state) {
+      case 'passed':
       case 'pass':
         return 'pass';
+      case 'failed':
       case 'fail':
         return 'fail';
+      case 'skipped':
       case 'skip':
         return 'skip';
       default:

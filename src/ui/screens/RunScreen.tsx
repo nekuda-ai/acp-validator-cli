@@ -13,13 +13,17 @@ import type { TestStateManager } from '../../core/test-state.js';
 interface Props {
   testState: TestStateManager;
   checkoutUrl?: string;
+  verbose?: boolean;
 }
 
-export const RunScreen: React.FC<Props> = ({ testState, checkoutUrl }) => {
+export const RunScreen: React.FC<Props> = ({ testState, checkoutUrl, verbose = false }) => {
   const { state, isRunning } = useTestRunner(testState);
 
   const totalTests = state.passed + state.failed + state.skipped;
   const successRate = totalTests > 0 ? ((state.passed / totalTests) * 100).toFixed(1) : '0';
+
+  // Convert categories Map to array for rendering
+  const categories = Array.from(state.categories.values());
 
   return (
     <Box flexDirection="column">
@@ -42,21 +46,46 @@ export const RunScreen: React.FC<Props> = ({ testState, checkoutUrl }) => {
         </Text>
       </Box>
 
-      {/* Task List */}
+      {/* Task List with Categories */}
       <TaskList>
-        {state.results.map((result, i) => (
-          <Task
-            key={i}
-            label={result.name}
-            state={
-              result.status === 'pass' ? 'success' :
-              result.status === 'fail' ? 'error' :
-              result.status === 'skip' ? 'warning' :
-              'pending'
-            }
-            spinner={spinners.dots}
-          />
-        ))}
+        {categories.map((category, i) => {
+          // Determine category state
+          const hasRunning = category.tests.some(t => t.status === 'pending');
+          const categoryState =
+            category.failed > 0 ? 'error' :
+            hasRunning ? 'loading' :
+            category.passed === category.total ? 'success' :
+            'pending';
+
+          const status = `${category.passed}/${category.total}`;
+
+          return (
+            <Task
+              key={i}
+              label={category.name}
+              state={categoryState}
+              status={status}
+              isExpanded={verbose || category.failed > 0} // Expand if verbose OR if has failures
+              spinner={spinners.dots}
+            >
+              {category.tests.map((test, j) => (
+                <Task
+                  key={j}
+                  label={test.name}
+                  state={
+                    test.status === 'pass' ? 'success' :
+                    test.status === 'fail' ? 'error' :
+                    test.status === 'skip' ? 'warning' :
+                    test.status === 'pending' ? 'loading' :
+                    'pending'
+                  }
+                  output={test.error?.message}
+                  spinner={spinners.dots}
+                />
+              ))}
+            </Task>
+          );
+        })}
 
         {/* Show loading state if tests are running */}
         {isRunning && (

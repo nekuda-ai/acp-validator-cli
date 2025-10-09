@@ -68,6 +68,7 @@ export async function runCommand(options: ConfigOptions): Promise<void> {
     testType: options.type || config?.testType || 'simple',
     outputFormat: options.format || config?.outputFormat || 'json',
     outputDir: options.output || config?.outputDir,
+    verbose: options.verbose || config?.verbose || false,
   };
 
   console.log('\nConfiguration:');
@@ -102,6 +103,7 @@ export async function runCommand(options: ConfigOptions): Promise<void> {
       React.createElement(RunScreen, {
         testState,
         checkoutUrl: finalConfig.checkoutUrl,
+        verbose: finalConfig.verbose || false,
       })
     );
 
