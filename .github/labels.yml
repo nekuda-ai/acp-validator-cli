@@ -1,0 +1,76 @@
+# GitHub Labels for Automatic Release Notes
+# Run this command to create these labels:
+# gh label create --file .github/labels.yml
+
+# Breaking Changes
+- name: breaking-change
+  description: Breaking change that requires major version bump
+  color: d73a4a
+
+# Features
+- name: feature
+  description: New feature or enhancement
+  color: a2eeef
+
+- name: enhancement
+  description: Enhancement to existing feature
+  color: 84b6eb
+
+# Bug Fixes
+- name: bug
+  description: Bug fix
+  color: d73a4a
+
+- name: fix
+  description: Bug fix
+  color: d73a4a
+
+# Improvements
+- name: improvement
+  description: Code improvement
+  color: 0e8a16
+
+- name: refactor
+  description: Code refactoring
+  color: fbca04
+
+- name: performance
+  description: Performance improvement
+  color: 0e8a16
+
+# Documentation
+- name: documentation
+  description: Documentation changes
+  color: 0075ca
+
+- name: docs
+  description: Documentation changes
+  color: 0075ca
+
+# Testing
+- name: test
+  description: Testing changes
+  color: d4c5f9
+
+- name: testing
+  description: Testing changes
+  color: d4c5f9
+
+# Chores
+- name: chore
+  description: Chore or maintenance task
+  color: fef2c0
+
+- name: maintenance
+  description: Maintenance task
+  color: fef2c0
+
+# Dependencies
+- name: dependencies
+  description: Dependency updates
+  color: 0366d6
+
+# Other
+- name: ignore-for-release
+  description: Do not include in release notes
+  color: ffffff

@@ -26,10 +26,21 @@
     "acp",
     "agentic-commerce",
     "testing",
-    "cli"
+    "cli",
+    "validator",
+    "checkout",
+    "openai"
   ],
-  "author": "Nekuda",
+  "author": "Nekuda <hello@nekuda.ai> (https://nekuda.ai)",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nekuda-ai/acp-validation-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nekuda-ai/acp-validation-cli/issues"
+  },
+  "homepage": "https://github.com/nekuda-ai/acp-validation-cli#readme",
   "dependencies": {
     "@inquirer/prompts": "^6.0.0",
     "@seriousme/openapi-schema-validator": "^2.7.0",
