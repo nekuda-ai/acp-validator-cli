@@ -35,12 +35,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nekuda-ai/acp-validation-cli.git"
+    "url": "https://github.com/nekuda-ai/acp-validator-cli.git"
   },
   "bugs": {
-    "url": "https://github.com/nekuda-ai/acp-validation-cli/issues"
+    "url": "https://github.com/nekuda-ai/acp-validator-cli/issues"
   },
-  "homepage": "https://github.com/nekuda-ai/acp-validation-cli#readme",
+  "homepage": "https://github.com/nekuda-ai/acp-validator-cli#readme",
   "dependencies": {
     "@inquirer/prompts": "^6.0.0",
     "@seriousme/openapi-schema-validator": "^2.7.0",
