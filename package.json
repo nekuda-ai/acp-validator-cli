@@ -14,7 +14,7 @@
     "spec"
   ],
   "scripts": {
-    "dev": "tsx src/cli.ts",
+    "dev": "NODE_ENV=development tsx src/cli.ts",
     "prebuild": "mkdir -p spec",
     "build": "tsup",
     "typecheck": "tsc --noEmit",
