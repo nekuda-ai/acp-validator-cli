@@ -32,7 +32,7 @@
     "openai"
   ],
   "author": "Nekuda <hello@nekuda.ai> (https://nekuda.ai)",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/nekuda-ai/acp-validator-cli.git"
