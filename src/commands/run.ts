@@ -12,7 +12,7 @@ import { RunScreen } from '../ui/screens/RunScreen.js';
 
 export async function runCommand(options: ConfigOptions): Promise<void> {
   // Load config from file if --config specified or search default locations
-  let config: ACPConfig | undefined = undefined;
+  let config: ACPConfig | undefined;
 
   if (options.config) {
     console.log(`Loading config from: ${options.config}`);
@@ -113,19 +113,26 @@ export async function runCommand(options: ConfigOptions): Promise<void> {
       reporters.push(getReporter(finalConfig.outputFormat));
     }
 
+    // Use src/tests in dev mode, dist/tests in production
+    const isDev = process.env.NODE_ENV === 'development';
+    const testPattern = isDev
+      ? '**/src/tests/**/*.test.ts'
+      : '**/dist/**/*.test.js';
+    const excludePatterns = isDev ? [
+      '**/src/commands/**/*.test.ts',
+      '**/src/config/**/*.test.ts',
+      '**/node_modules/**',
+    ] : undefined;
+
     // Start Vitest programmatically
     const vitest = await startVitest(
       'test',
       [], // No CLI filters
       {
         // Only run external merchant validation tests
-        include: ['**/src/tests/**/*.test.ts'],
+        include: [testPattern],
         // Exclude internal CLI tests
-        exclude: [
-          '**/src/commands/**/*.test.ts',
-          '**/src/config/**/*.test.ts',
-          '**/node_modules/**',
-        ],
+        exclude: excludePatterns,
         // Disable watch mode
         watch: false,
         // Configure reporters
